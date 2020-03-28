@@ -8,7 +8,7 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 * Does not change anything about your original files or folders. Nothing gets removed or added
 * Simply mount your original files folder(s) into it
 * Create thumbnails periodically and automatically
-* Offer simple search and sort functions (date, file type, metadata, etc.)
+* Offer simple search and sort functions (date, file type, metadata, etc.) (read metadata via exif or imagick?)
 * No need for a specific way of adding files. Simply add them in any way you want. FTP, PhotSync App, whatever
 
 ## System
