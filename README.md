@@ -34,3 +34,9 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 * This doesn't sync your files
 * No login, user management or sharing functions planned as of yet
 * Login and HTTPS should be done via the reverse proxy of your choice, e.g. Traefik
+
+## Needs
+* PHP with
+ * SQLite3 installed
+ * imagick installed
+ * --enable-exif flag
