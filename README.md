@@ -18,6 +18,7 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 * Show Metadata/Exif data
 * Fullscreen slideshow when image is opened
 * Filtering options according to metadata
+* Ability to create a Gif from monthly/daily picturesets (because why not?)
 
 ## System
 * SQLite as a database. Might be too slow for huge images collections, but we'll see how it goes. Pro: Doesn't need an extra MYSQL container to be set up
