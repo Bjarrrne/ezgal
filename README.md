@@ -11,11 +11,21 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 * Offer simple search and sort functions (date, file type, metadata, etc.) (read metadata via exif or imagick?)
 * No need for a specific way of adding files. Simply add them in any way you want. FTP, PhotSync App, whatever
 
+## What I'd like to accomplish (kind of a Roadmap)
+* When thumbnails do not exist yet, show originals instead
+* Show Gifs/Videos
+* LazyLoad
+* Show Metadata/Exif data
+* Fullscreen slideshow when image is opened
+* Filtering options according to metadata
+
 ## System
 * SQLite as a database. Might be too slow for huge images collections, but we'll see how it goes. Pro: Doesn't need an extra MYSQL container to be set up
 * PHP on NGINX
 * Imagick for thumbnail creation
-* CSS (Javascript if needed, let's see...)
+* Frontend
+  * Normalize.cc for normalization
+  * Some CSS Framework... TBD
 * A Cronjob for periodical thumbnail creation, I guess
 * Docker image that combines everything to a ready to go solution
 
