@@ -11,7 +11,8 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 * Offer simple search and sort functions (date, file type, metadata, etc.)
 * No need for a specific way of adding files. Simply add them in any way you want. FTP, PhotSync App, WebDav, etc.
 * Everything is stored locally! No need for an internet connection because this doesn't use CDNs for external assets. This might be stupid but at the same time I wanted to create something that can work even when your server isn't connected to the internet
-* For images: Everything imagick can work with. Haven't tested this yet. For videos: Everything HTML5 can work with out of the box. So nothing advanced, but smartphone videos should work.
+* Compatible file formats - For images: Everything imagick can work with. Haven't tested this yet. For videos: Everything HTML5 can work with out of the box. So nothing advanced, but smartphone videos should work.
+
 ## What I'd like to accomplish (kind of a Roadmap)
 * When thumbnails do not exist yet, show originals instead
 * Show Gifs/Videos
