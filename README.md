@@ -22,7 +22,7 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 - [ ] Create Docker image that combines everything to a ready to go solution
 
 ## System
-* SQLite as a database. Might be too slow for huge images collections, but we'll see how it goes. Pro: Doesn't need MYSQL to be set up
+* SQLite. Might be too slow for huge images collections, but we'll see how it goes. Pro: Doesn't need MYSQL to be set up
 * PHP on NGINX
 * Imagick for thumbnail creation
 * Frontend
