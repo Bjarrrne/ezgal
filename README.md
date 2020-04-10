@@ -5,32 +5,29 @@ An easy to setup, non-destructive image gallery with a nice mobile-first fronten
 The idea is to create a super simple web-frontend for your self-hosted images, that kind of resembles the design of Google Photos, and that can be set up super easily with docker. 
 
 ## Features
-* Does not change anything about your original files or folders. Nothing gets removed or added
+* Does **not** change anything about your original files or folders.
 * Simply mount your original files folder(s) into it
-* Create thumbnails periodically and automatically
-* Offer simple search and sort functions (date, file type, metadata, etc.)
+* Creates thumbnails automatically (may take a while on first startup)
 * No need for a specific way of adding files. Simply add them in any way you want. FTP, PhotSync App, WebDav, etc.
 * Everything is stored locally! No need for an internet connection because this doesn't use CDNs for external assets. This might be stupid but at the same time I wanted to create something that can work even when your server isn't connected to the internet
-* Compatible file formats - For images: Everything imagick can work with. Haven't tested this yet. For videos: Everything HTML5 can work with out of the box. So nothing advanced, but smartphone videos should work.
+* Compatible file formats: Unknown.
 
 ## What I'd like to accomplish (kind of a Roadmap)
-* When thumbnails do not exist yet, show originals instead
-* Show Gifs/Videos
-* LazyLoad
-* Show Metadata/Exif data
-* Fullscreen slideshow when image is opened
-* Filtering options according to metadata
-* Ability to create a Gif from monthly/daily picturesets (because why not?)
+- [ ] Show Gifs/Videos (still having frontend problems)
+- [x] Show Metadata/Exif data
+- [ ] Fullscreen slideshow when image is opened
+- [ ] Filtering options according to metadata (date, file type, metadata, etc.)
+- [ ] Ability to create a Gif from monthly/daily picturesets (because why not?)
+- [ ] Create Docker image that combines everything to a ready to go solution
 
 ## System
-* SQLite as a database. Might be too slow for huge images collections, but we'll see how it goes. Pro: Doesn't need an extra MYSQL container to be set up
+* SQLite as a database. Might be too slow for huge images collections, but we'll see how it goes. Pro: Doesn't need MYSQL to be set up
 * PHP on NGINX
 * Imagick for thumbnail creation
 * Frontend
-  * Normalize.cc for normalization
-  * FontAwesome for fancypants icons
-* A Cronjob for periodical thumbnail creation, I guess
-* Docker image that combines everything to a ready to go solution
+  * LazyLoad (v. 15.1.1, https://github.com/verlok/lazyload)
+  * Normalize.cc for normalization (v. 8.0.1, https://github.com/necolas/normalize.css/)
+  * FontAwesome for fancy icons
 
 ## What this doesn't do
 * This doesn't sync your files
