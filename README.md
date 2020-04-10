@@ -15,6 +15,7 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 ## What I'd like to accomplish (kind of a Roadmap)
 - [ ] Show Gifs/Videos (still having frontend problems)
 - [x] Show Metadata/Exif data
+- [x] Get Lazyload to work (Needs some testing)
 - [ ] Fullscreen slideshow when image is opened
 - [ ] Filtering options according to metadata (date, file type, metadata, etc.)
 - [ ] Ability to create a Gif from monthly/daily picturesets (because why not?)
