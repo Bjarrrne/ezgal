@@ -44,3 +44,11 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
  ## Is this safe to use for public galleries?
  * NO!
  * Right now all the metadata can be accessed quite easily. Until I took some measures for safety (hide the data, secure data queries, etc.) you should only use this in public if... actually, no, don't use this in public.
+
+## 2dos
+ * Flesh out processing:
+   * Deletion of deleted images from DB and thumbnails/intermediates
+   * Ensure that only compatible files are being used
+   * Optimize large archive processing
+ * Map
+   * Finalize long/lat usage in file details
