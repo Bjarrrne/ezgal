@@ -9,14 +9,14 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 * Simply mount your original files folder(s) into it
 * Creates thumbnails automatically (may take a while on first startup)
 * No need for a specific way of adding files. Simply add them in any way you want. FTP, PhotSync App, WebDav, etc.
-* Everything is stored locally! No need for an internet connection because this doesn't use CDNs for external assets. This might be stupid but at the same time I wanted to create something that can work even when your server isn't connected to the internet
-* Compatible file formats: Unknown.
+* Everything is stored locally! No need for an internet connection because this doesn't use CDNs for external assets. This might be stupid but at the same time I wanted to create something that can work even when your server isn't connected to the internet (except GMaps, which is only activated when adding an API-Key).
+* Compatible file formats: Unknown. Well kind of. RAW doesn't work as of yet. Web-standard image files (jpg, png, gif, bmp) work. The rest is trial and error I guess.
 
 ## What I'd like to accomplish (kind of a Roadmap)
-- [ ] Show Gifs/Videos (still having frontend problems)
+- [x] Show Gifs/Videos (still having frontend problems)
 - [x] Show Metadata/Exif data
-- [x] Get Lazyload to work (Needs some testing)
-- [ ] Fullscreen slideshow when image is opened
+- [x] Get Lazyload to work (needs some more testing)
+- [x] Fullscreen slideshow when image is opened (with preloader)
 - [ ] Filtering options according to metadata (date, file type, metadata, etc.)
 - [ ] Ability to create a Gif from monthly/daily picturesets (because why not?)
 - [ ] Create Docker image that combines everything to a ready to go solution
@@ -39,6 +39,7 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 * PHP with
  * SQLite3 installed
  * imagick installed
+  * for RAW the according delegates will have to be installed. Still working on the best options here.
  * --enable-exif flag set
  
  ## Is this safe to use for public galleries?
@@ -47,8 +48,8 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 
 ## 2dos
  * Flesh out processing:
-   * Deletion of deleted images from DB and thumbnails/intermediates
+   * [x] Deletion of deleted images from DB and thumbnails/intermediates
    * Ensure that only compatible files are being used
    * Optimize large archive processing
  * Map
-   * Finalize long/lat usage in file details
+   * [x] Finalize long/lat usage in file details (works, I think?)
