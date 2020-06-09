@@ -39,7 +39,7 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 * PHP with
  * SQLite3 installed
  * imagick installed
-  * for RAW the according delegates will have to be installed. Still working on the best options here.
+   * for RAW the according delegates will have to be installed. Still working on the best options here. Here it is argued that extracting preview images instead of converting is much faster: https://benjaminhorn.io/code/extracting-thumbnails-from-camera-raw-files-cr2-and-nef-with-php/
  * --enable-exif flag set
  
  ## Is this safe to use for public galleries?
