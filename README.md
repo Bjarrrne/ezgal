@@ -22,7 +22,7 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 - [ ] Create Docker image that combines everything to a ready to go solution
 
 ## System
-* SQLite. Might be too slow for huge images collections, but we'll see how it goes. Pro: Doesn't need MYSQL to be set up
+* SQLite. Might be too slow for huge images collections, but we'll see how it goes. Pro: Doesn't need MYSQL to be set up as an extra service
 * PHP on NGINX
 * Imagick for thumbnail creation
 * Frontend
@@ -35,11 +35,14 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 * No login, user management or sharing functions planned as of yet
 * Login and HTTPS should be done via the reverse proxy of your choice, e.g. Traefik
 
-## Prerequisites
+## Prerequisites (for non-docker setups)
+* Server with
+ * imagemagick and the necessary delegates installed
+ * ufraw
+ * exiv2
 * PHP with
  * SQLite3 installed
- * imagick installed
-   * for RAW the according delegates will have to be installed. Still working on the best options here. Here it is argued that extracting preview images instead of converting is much faster: https://benjaminhorn.io/code/extracting-thumbnails-from-camera-raw-files-cr2-and-nef-with-php/
+ * imagick extension installed
  * --enable-exif flag set
  
  ## Is this safe to use for public galleries?
