@@ -37,22 +37,23 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 
 ## Prerequisites (for non-docker setups)
 * Server with
- * imagemagick and the necessary delegates installed
- * ufraw
- * exiv2
+  * imagemagick and the necessary delegates installed
+  * ufraw
+  * exiv2
 * PHP with
- * SQLite3 installed
- * imagick extension installed
- * --enable-exif flag set
+  * SQLite3 installed
+  * imagick extension installed
+  * --enable-exif flag set
  
  ## Is this safe to use for public galleries?
  * NO!
  * Right now all the metadata can be accessed quite easily. Until I took some measures for safety (hide the data, secure data queries, etc.) you should only use this in public if... actually, no, don't use this in public.
 
 ## 2dos
- * Flesh out processing:
-   * [x] Deletion of deleted images from DB and thumbnails/intermediates
-   * Ensure that only compatible files are being used
-   * Optimize large archive processing
- * Map
-   * [x] Finalize long/lat usage in file details (works, I think?)
+[ ] Check installed extensions (sqlite, imagick, ufraw etc.) and inform user if something is missing
+* Flesh out processing:
+  * [x] Deletion of deleted images from DB and thumbnails/intermediates
+  * Ensure that only compatible files are being used
+  * Optimize large archive processing
+* Map
+  * [x] Finalize long/lat usage in file details (works, I think?)
