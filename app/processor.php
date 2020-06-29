@@ -92,6 +92,7 @@ foreach ($filescan as $foundfile) {
 			$extension			= pathinfo($relativepath, PATHINFO_EXTENSION);
 			$file_size			= filesize($relativepath);
 			$mod_date			= filemtime($relativepath);
+			$date_to_sort		= $mod_date;
 	} // End exif_imagetype if
 
 	// Write data into database
