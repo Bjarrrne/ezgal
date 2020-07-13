@@ -13,6 +13,6 @@ RUN apt-get update && apt-get install -y \
 	imagemagick \
 	libmagickwand-dev --no-install-recommends \
 	&& pecl install imagick \
-	&& docker-php-ext-enable imagick
+	&& docker-php-ext-enable imagick exif
 	
 EXPOSE 80 443
