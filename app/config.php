@@ -7,7 +7,7 @@ This is the config file for ezgal which sets up all necessary stuff
 */
 
 // API Key for Google Maps usage. Howto: https://developers.google.com/maps/documentation/javascript/get-api-key
-$gapikey = "AIzaSyAGCQ9FSR4gKdB7XokoYyFDTT2aPZdppBE";
+$gapikey = "";
 
 // Debugging
 // Show Errors
