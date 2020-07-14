@@ -11,6 +11,7 @@
 - [x] Ensure that only compatible files are being used
 - [ ] Optimize large archive processing
 - [ ] Fix that image thumbnails/intermediates are saved with the original file extension (e.g. bmp) instead of .jpg
+- [ ] Optimize gif thumbs (the generated thumbs are way too big. Either optimize or use still images instead)
 
 ## Frontend
 

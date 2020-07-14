@@ -189,6 +189,7 @@ $videothumbsdir = realpath("videothumbs");
 // Defining the DB queries for different file formats
 $imagickquery = "SELECT * FROM files WHERE mimetype IN ('jpeg', 'tiff', 'png', 'bmp', 'x-bmp', 'x-ms-bmp') AND filetype = 'image' AND processed = 0 ORDER BY id";
 $ffmpegquery = "SELECT * FROM files WHERE mimetype IN ('mpeg', 'mp4', 'ogg', 'quicktime', 'webm', 'x-msvideo', 'x-sgi-movie', '3gpp') AND filetype = 'video' AND processed = 0 ORDER BY id";
+$gifquery = "SELECT * FROM files WHERE mimetype IN ('gif') AND filetype = 'image' AND processed = 0 ORDER BY id";
 $exiv2query = "SELECT * FROM files WHERE mimetype IN ('x-canon-cr2') AND filetype = 'image' AND processed = 0 ORDER BY id";
 
 // Loop for standard image files. No videos, audio or gifs allowed.
@@ -261,29 +262,37 @@ foreach ($db->query($ffmpegquery) as $videodata) {
 	$videothumbfile = $videothumbdir . "/" . $filename;
 	if (!is_writable($videothumbdir)) { mkdir($videothumbdir, 0755, true); }
 	
-	// Create thumbnail with ffmpeg and save in tmp
-	exec("ffmpeg -i '".$origpath."' -ss 00:00:01.000 -vframes 1 /tmp/'".$dirname."''".$filename."'.png");
-	// Edit with imagick (this step could be removed once I find out how to save the videothumb with ffmpeg in the correct dimensions (XXX x $setting_thumbsize)
-	$videothumb = new Imagick("/tmp/".$dirname."".$filename.".png");
-	// Resize image using the lanczos resampling algorithm based on width
-	$videothumb->resizeImage(0,$setting_thumbsize,Imagick::FILTER_LANCZOS,1,FALSE);
-	// Sharpen thumbnail
-	if ($setting_sharpening == 1) { $videothumb->sharpenImage(0, 0.7); }
-	// Set to use jpeg compression
-	$videothumb->setImageCompression(Imagick::COMPRESSION_JPEG);
-	// Set compression level (1 lowest quality, 100 highest quality)
-	$videothumb->setImageCompressionQuality(75);
-	// Strip out unneeded meta data
-	$videothumb->stripImage();
-	$videothumb->writeImage("".$videothumbfile.".jpg");
-	$videothumb->destroy();
-	// Deleting tmp file
-	unlink("/tmp/".$dirname."".$filename.".png");
+	// Create thumbnail with ffmpeg
+	exec('ffmpeg -i '.$origpath.' -ss 00:00:01.000 -vframes 1 -vf scale=-1:'.$setting_thumbsize.' '.$videothumbdir.'/'.$filename.'.png');
+	
+	// This can be used to generate gifs from videos, but atm the gifs are way to big so its not used
+	// exec('ffmpeg -ss 0.1 -t 2.5 -i '.$origpath.' -filter_complex "[0:v] fps=12,scale='.$setting_thumbsize.':-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" '.$videothumbdir.'/'.$filename.'.gif');
 	
 	// Write success into database
 	$db->exec("UPDATE files SET processed = 1 WHERE relativepath = '$origpath'");
 	
 // End video processing loop
+}
+
+// Loop for gifs (have to resized for frontend to work properly)
+foreach ($db->query($gifquery) as $gifdata) {
+	// Setting up data from DB needed
+	$origpath = $gifdata['relativepath'];
+	$dirname = $gifdata['dirname'];
+	$filename = $gifdata['filename'];
+	
+	// Create videothumbnail directories
+	$thumbdir = $thumbsdir . "/" . $dirname;
+	$thumbfile = $thumbdir . "/" . $filename;
+	if (!is_writable($thumbdir)) { mkdir($thumbdir, 0755, true); }
+	
+	// Create thumbnail with ffmpeg (seems to be kind of complicated with imagemagick...)
+	exec('ffmpeg -hide_banner -v warning -i '.$origpath.' -filter_complex "[0:v] scale=-1:'.$setting_thumbsize.':flags=lanczos,split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse" '.$thumbdir.'/'.$filename.'.gif');
+	
+	// Write success into database
+	$db->exec("UPDATE files SET processed = 1 WHERE relativepath = '$origpath'");
+	
+// End gifs processing loop
 }
 
 

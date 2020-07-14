@@ -73,3 +73,10 @@ Keep in mind that you will have to install the following tools/extensions for th
 - [x] Fullscreen slideshow when image is opened (with preloader)
 - [ ] Filtering options according to metadata (date, file type, metadata, etc.)
 - [x] Create Docker image that combines everything to a ready to go solution
+
+## Some links that were really helpful
+
+ffmpeg/gif: 
+
+* https://github.com/cyburgee/ffmpeg-guide
+* https://superuser.com/questions/556029/how-do-i-convert-a-video-to-gif-using-ffmpeg-with-reasonable-quality/556031#556031

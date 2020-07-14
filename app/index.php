@@ -81,12 +81,12 @@ foreach($db->query($frontendquery) as $filedata) {
 	echo "<div class=\"mediawrapper\">";
 	// Videos
 	if ($filedata['filetype'] == 'video') {
-		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"videothumbs/".$filedata['dirname']."/".$filedata['filename'].".jpg\"  onclick=\"overlay('openoverlay', '".$mediacounter."', 'video', '".$relativepath."', '".$filedata['basename']."')\"><i class=\"playbtn fa fa-play\" onclick=\"overlay('openoverlay', '".$mediacounter."', 'video', '".$relativepath."', '".$filedata['basename']."')\"></i>";
+		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"videothumbs/".$filedata['dirname']."/".$filedata['filename'].".png\"  onclick=\"overlay('openoverlay', '".$mediacounter."', 'video', '".$relativepath."', '".$filedata['basename']."')\"><i class=\"playbtn fa fa-play\" onclick=\"overlay('openoverlay', '".$mediacounter."', 'video', '".$relativepath."', '".$filedata['basename']."')\"></i>";
 	// Gifs
-	} elseif ($filedata['extension'] == 'gif') {
-		// Gifs are extra here because even though they are images, no thumbnails or intermediates are created
-		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"".$relativepath."\" onclick=\"overlay('openoverlay', '".$mediacounter."', 'gif', '".$relativepath."', '".$filedata['basename']."')\">";
-	// Images
+	} elseif ($filedata['mimetype'] == 'gif') {
+		// Gifs are extra here because thumbs are created but no intermediates are used
+		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"thumbs/".$filedata['relativepath']."\" onclick=\"overlay('openoverlay', '".$mediacounter."', 'gif', '".$relativepath."', '".$filedata['basename']."')\">";
+	// Images (standard & raw)
 	} elseif ($filedata['filetype'] == 'image') {
 		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"thumbs/".$filedata['relativepath']."\" onclick=\"overlay(
 			'openoverlay',
