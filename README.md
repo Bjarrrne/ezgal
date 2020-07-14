@@ -27,7 +27,7 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 ### With docker
 
 - Use docker run and mount the correct media folder into it, e.g. like
-  `docker run -d -v /your/media/folder:/var/www/html/images -p 80:80 barrrne/ezgal:latest`
+  `docker run -d -p 80:80 -v /your/media/folder:/var/www/html/images barrrne/ezgal:latest`
 - Or use docker compose
 
 ### Without docker
@@ -73,13 +73,3 @@ Keep in mind that you will have to install the following tools/extensions for th
 - [x] Fullscreen slideshow when image is opened (with preloader)
 - [ ] Filtering options according to metadata (date, file type, metadata, etc.)
 - [x] Create Docker image that combines everything to a ready to go solution
-
-## 2dos
-* [ ] Check installed extensions (sqlite, imagick, ufraw etc.) and inform user if something is missing
-
-* Flesh out processing:
-  * [x] Deletion of deleted images from DB and thumbnails/intermediates
-  * Ensure that only compatible files are being used
-  * Optimize large archive processing
-* Map
-  * [x] Finalize long/lat usage in file details (works, I think?)

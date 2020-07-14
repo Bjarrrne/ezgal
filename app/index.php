@@ -81,7 +81,7 @@ foreach($db->query($frontendquery) as $filedata) {
 	echo "<div class=\"mediawrapper\">";
 	// Videos
 	if ($filedata['filetype'] == 'video') {
-		echo "<video id=\"mediaid".$mediacounter."\" class=\"lazy\" autoplay loop muted data-src=\"".$relativepath."\" onclick=\"overlay('openoverlay', '".$mediacounter."', 'video', '".$relativepath."', '".$filedata['basename']."')\"><source data-src=\"".$relativepath."\"></video>";
+		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"videothumbs/".$filedata['dirname']."/".$filedata['filename'].".jpg\"  onclick=\"overlay('openoverlay', '".$mediacounter."', 'video', '".$relativepath."', '".$filedata['basename']."')\"><i class=\"playbtn fa fa-play\" onclick=\"overlay('openoverlay', '".$mediacounter."', 'video', '".$relativepath."', '".$filedata['basename']."')\"></i>";
 	// Gifs
 	} elseif ($filedata['extension'] == 'gif') {
 		// Gifs are extra here because even though they are images, no thumbnails or intermediates are created
@@ -243,6 +243,7 @@ echo "</section>";
 		<table class="overlay-table">
 		<tr><td>Number of media</td><td><?php $generalinfocountentries = $db->query("SELECT count(1) FROM files")->fetch(); echo $generalinfocountentries[0]; ?></td></tr>
 		<tr><td>Size of media</td><td><?php $generalinfosize = $db->query("SELECT SUM(file_size) FROM files")->fetch(); echo formatBytes($generalinfosize[0]); ?></td></tr>
+		<tr><td>ezgal Version</td><td>0.2</td></tr>
 		</table>
 	</div>
 </div>

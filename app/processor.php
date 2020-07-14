@@ -23,8 +23,9 @@ foreach ($filescan as $foundfile) {
     if ($alreadyexisting) { continue; }
 	
 	// If file is not an image or a video, continue in foreach
-	$mimetype = mime_content_type($absolutepath);
-	$filetypearray = explode("/", $mimetype);
+	$mime = mime_content_type($absolutepath);
+	$filetypearray = explode("/", $mime);
+	$mimetype = $filetypearray[1];
 	$filetype = $filetypearray[0];
 	if (!($filetype == 'image' || $filetype == 'video')) {
 		echo $absolutepath . " is neither video nor image<br />";
@@ -81,9 +82,9 @@ foreach ($filescan as $foundfile) {
 			$exif_longitude_dd	= $exif_longitude_deg + ($exif_longitude_min / 60) + ($exif_longitude_sec / 3600);
 			if ($exif_longituderef == 'W') { $exif_longitude_dd *= -1; }
 			$processed			= '0';
-	// Non-image files		
+	// Non-image files	 THIS SHOULD BE EXTENDED TO EXTRACT AUDIO/VIDEO METADATA ETC.	
 	} else {
-			$processed			= '1';
+			$processed			= '0';
 			$exif_exists 		= 'NULL';
 			$exif_datetime		= 'NULL';
 			$dirname			= pathinfo($relativepath, PATHINFO_DIRNAME);
@@ -175,26 +176,33 @@ foreach ($filescan as $foundfile) {
 // End filescan foreach loop
 }
 
-// DB is filled with new and changed image data. Now another loop to process the images (=create thumbnails). No videos and no gifs allowed.
-$processquery = "SELECT * FROM files WHERE extension != 'gif' AND filetype = 'image' AND processed = 0 ORDER BY id";
+// DB is filled with new and changed image data. Now another loop to process the files (=create thumbnails).
 
-// Create thumbs and intermediate folders
+// Create imagethumbs, videothumbs and intermediate folders
 if (!is_writable('thumbs')) { mkdir('thumbs', 0755, true); }
 if (!is_writable('intermediates')) { mkdir('intermediates', 0755, true); }
+if (!is_writable('videothumbs')) { mkdir('videothumbs', 0755, true); }
 $thumbsdir = realpath("thumbs");
 $intermediatesdir = realpath("intermediates");
+$videothumbsdir = realpath("videothumbs");
 
-foreach ($db->query($processquery) as $imagedata) {
+// Defining the DB queries for different file formats
+$imagickquery = "SELECT * FROM files WHERE mimetype IN ('jpeg', 'tiff', 'png', 'bmp', 'x-bmp', 'x-ms-bmp') AND filetype = 'image' AND processed = 0 ORDER BY id";
+$ffmpegquery = "SELECT * FROM files WHERE mimetype IN ('mpeg', 'mp4', 'ogg', 'quicktime', 'webm', 'x-msvideo', 'x-sgi-movie', '3gpp') AND filetype = 'video' AND processed = 0 ORDER BY id";
+$exiv2query = "SELECT * FROM files WHERE mimetype IN ('x-canon-cr2') AND filetype = 'image' AND processed = 0 ORDER BY id";
+
+// Loop for standard image files. No videos, audio or gifs allowed.
+foreach ($db->query($imagickquery) as $imagedata) {
 	// Setting up data from DB needed
 	$origpath = $imagedata['relativepath'];
 	$dirname = $imagedata['dirname'];
 	$filename = $imagedata['basename'];
 	$orientation = $imagedata['exif_orientation'];
 	
-		// Create thumbnail directory
+		// Create thumbnail directories
 		$thumbdir = $thumbsdir . "/" . $dirname;
 		$thumbfile = $thumbdir . "/" . $filename;
-		mkdir($thumbdir, 0755, true);
+		if (!is_writable($thumbdir)) { mkdir($thumbdir, 0755, true); }
 		// Creat thumbnails
 		$thumb = new Imagick($origpath);
 		// Rotate image if exif data says so, with transparent background just in case
@@ -215,7 +223,7 @@ foreach ($db->query($processquery) as $imagedata) {
 		// Create intermediate directory
 		$intermediatedir = $intermediatesdir . "/" . $dirname;
 		$intermediatefile = $intermediatedir . "/" . $filename;
-		mkdir($intermediatedir, 0755, true);
+		if (!is_writable($intermediatedir)) { mkdir($intermediatedir, 0755, true); }
 		// Creat thumbnails
 		$intermediate = new Imagick($origpath);
 		// Rotate image if exif data says so, with transparent background just in case
@@ -238,7 +246,44 @@ foreach ($db->query($processquery) as $imagedata) {
 	// Write success into database
 	$db->exec("UPDATE files SET processed = 1 WHERE relativepath = '$origpath'");
 	
-// End processing foreach loop
+// End standard images processing loop
+}
+
+// Loop for videos
+foreach ($db->query($ffmpegquery) as $videodata) {
+	// Setting up data from DB needed
+	$origpath = $videodata['relativepath'];
+	$dirname = $videodata['dirname'];
+	$filename = $videodata['filename'];
+	
+	// Create videothumbnail directories
+	$videothumbdir = $videothumbsdir . "/" . $dirname;
+	$videothumbfile = $videothumbdir . "/" . $filename;
+	if (!is_writable($videothumbdir)) { mkdir($videothumbdir, 0755, true); }
+	
+	// Create thumbnail with ffmpeg and save in tmp
+	exec("ffmpeg -i '".$origpath."' -ss 00:00:01.000 -vframes 1 /tmp/'".$dirname."''".$filename."'.png");
+	// Edit with imagick (this step could be removed once I find out how to save the videothumb with ffmpeg in the correct dimensions (XXX x $setting_thumbsize)
+	$videothumb = new Imagick("/tmp/".$dirname."".$filename.".png");
+	// Resize image using the lanczos resampling algorithm based on width
+	$videothumb->resizeImage(0,$setting_thumbsize,Imagick::FILTER_LANCZOS,1,FALSE);
+	// Sharpen thumbnail
+	if ($setting_sharpening == 1) { $videothumb->sharpenImage(0, 0.7); }
+	// Set to use jpeg compression
+	$videothumb->setImageCompression(Imagick::COMPRESSION_JPEG);
+	// Set compression level (1 lowest quality, 100 highest quality)
+	$videothumb->setImageCompressionQuality(75);
+	// Strip out unneeded meta data
+	$videothumb->stripImage();
+	$videothumb->writeImage("".$videothumbfile.".jpg");
+	$videothumb->destroy();
+	// Deleting tmp file
+	unlink("/tmp/".$dirname."".$filename.".png");
+	
+	// Write success into database
+	$db->exec("UPDATE files SET processed = 1 WHERE relativepath = '$origpath'");
+	
+// End video processing loop
 }
 
 

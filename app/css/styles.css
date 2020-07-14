@@ -93,6 +93,7 @@ a {
 .mediawrapper {
 	display: table-cell;
 	z-index: 1;
+	position: relative;
 }
 
 #gallery img {
@@ -102,11 +103,21 @@ a {
 	padding: 1px;
 }
 
-#gallery video {
-    display: block;
-    width: 100%;
-    height: auto;
-	padding: 1px;
+.playbtn {
+	position: absolute;
+	z-index: 2;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+	font-size: 65px;
+	color: #ffffff;
+    text-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+}
+
+.playbtn:hover {
+	color: #0C9;
+    transition: .3s ease all;
 }
 
 .monthsdivider {
