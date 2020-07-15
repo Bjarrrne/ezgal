@@ -202,9 +202,9 @@ function prevmedia() {
 // Simple preloading function for overlay view
 function preloadoverlayimages(nextimage, previousimage) {
 	var nxtimg = new Image();
-	nxtimg.src = "intermediates/" + nextimage;
+	nxtimg.src = nextimage;
 	var prvimg = new Image();
-	prvimg.src = "intermediates/" + previousimage;
+	prvimg.src = previousimage;
 }
 	
 	

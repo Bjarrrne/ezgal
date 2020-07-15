@@ -80,3 +80,7 @@ ffmpeg/gif:
 
 * https://github.com/cyburgee/ffmpeg-guide
 * https://superuser.com/questions/556029/how-do-i-convert-a-video-to-gif-using-ffmpeg-with-reasonable-quality/556031#556031
+
+raw preview image extraction:
+
+* https://benjaminhorn.io/code/extracting-thumbnails-from-camera-raw-files-cr2-and-nef-with-php/

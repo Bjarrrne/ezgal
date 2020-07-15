@@ -57,15 +57,31 @@ foreach($db->query($frontendquery) as $filedata) {
 	$filedatecurrent = date("F Y", $filedata['date_to_sort']);
 	
 	// Here we create a new SQL query to get the next and previous mediapath, to give those to the javascript function
-	// to preload them if the user clicks/swiptes through the media in the overlay. There might be a better way
+	// to preload them if the user clicks/swipes through the media in the overlay. There might be a better way
 	// but I haven't thought of one yet. This will be problematic with multiple entries with the same date_to_sort value...
 	// Oh yes and this doesn't really work when the view is filtered, because it preloads the wrong images...
 	// Gotta think of something better...
 	$prevmediapath = "";
 	$nextmediaquery = "SELECT * FROM files WHERE date_to_sort < $filedatecurrentunix ORDER BY date_to_sort DESC LIMIT 1";
-	foreach($db->query($nextmediaquery) as $nextmediaarray) { $nextmediapath = $nextmediaarray['relativepath']; }
+	foreach($db->query($nextmediaquery) as $nextmediaarray) {
+		if ($nextmediaarray['mimetype'] == 'gif') {
+			$nextmediapath = $nextmediaarray['relativepath'];
+		} elseif ($nextmediaarray['filetype'] == 'image') {
+			$nextmediapath = 'intermediates/'.$nextmediaarray['dirname'].'/'.$nextmediaarray['basename'].'.jpg';
+		} else {
+			$nextmediapath = $nextmediaarray['relativepath'];
+		}
+	}
 	$prevmediaquery = "SELECT * FROM files WHERE date_to_sort > $filedatecurrentunix ORDER BY date_to_sort ASC LIMIT 1";
-	foreach($db->query($prevmediaquery) as $prevmediaarray) { $prevmediapath = $prevmediaarray['relativepath']; }
+	foreach($db->query($prevmediaquery) as $prevmediaarray) { 
+		if ($prevmediaarray['mimetype'] == 'gif') {
+			$prevmediapath = $prevmediaarray['relativepath'];
+		} elseif ($prevmediaarray['filetype'] == 'image') {
+			$prevmediapath = 'intermediates/'.$prevmediaarray['dirname'].'/'.$prevmediaarray['basename'].'.jpg';
+		} else {
+			$prevmediapath = $prevmediaarray['relativepath'];
+		}
+	}
 	
 	// Monthly dividers
 	if ($filedatecurrent != $filedateold) {
@@ -81,18 +97,18 @@ foreach($db->query($frontendquery) as $filedata) {
 	echo "<div class=\"mediawrapper\">";
 	// Videos
 	if ($filedata['filetype'] == 'video') {
-		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"videothumbs/".$filedata['dirname']."/".$filedata['filename'].".png\"  onclick=\"overlay('openoverlay', '".$mediacounter."', 'video', '".$relativepath."', '".$filedata['basename']."')\"><i class=\"playbtn fa fa-play\" onclick=\"overlay('openoverlay', '".$mediacounter."', 'video', '".$relativepath."', '".$filedata['basename']."')\"></i>";
+		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"videothumbs/".$filedata['dirname']."/".$filedata['basename'].".png\"  onclick=\"overlay('openoverlay', '".$mediacounter."', 'video', '".$relativepath."', '".$filedata['basename']."')\"><i class=\"playbtn fa fa-play\" onclick=\"overlay('openoverlay', '".$mediacounter."', 'video', '".$relativepath."', '".$filedata['basename']."')\"></i>";
 	// Gifs
 	} elseif ($filedata['mimetype'] == 'gif') {
 		// Gifs are extra here because thumbs are created but no intermediates are used
-		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"thumbs/".$filedata['relativepath']."\" onclick=\"overlay('openoverlay', '".$mediacounter."', 'gif', '".$relativepath."', '".$filedata['basename']."')\">";
+		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"thumbs/".$filedata['dirname']."/".$filedata['basename'].".gif\" onclick=\"overlay('openoverlay', '".$mediacounter."', 'gif', '".$relativepath."', '".$filedata['basename']."')\">";
 	// Images (standard & raw)
 	} elseif ($filedata['filetype'] == 'image') {
-		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"thumbs/".$filedata['relativepath']."\" onclick=\"overlay(
+		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"thumbs/".$filedata['dirname']."/".$filedata['basename'].".jpg\" onclick=\"overlay(
 			'openoverlay',
 			'".$mediacounter."',
 			'image',
-			'".$filedata['relativepath']."',
+			'".$filedata['dirname']."/".$filedata['basename'].".jpg',
 			'".$filedata['basename']."',
 			'".$filedata['date_to_sort']."',
 			'".$filedata['mimetype']."',
