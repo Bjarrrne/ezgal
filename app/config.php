@@ -58,7 +58,8 @@ $db->exec("CREATE TABLE IF NOT EXISTS files(
    exif_longitude_min TEXT,
    exif_longitude_sec TEXT,
    exif_longitude_dd TEXT,
-   date_to_sort TEXT
+   date_to_sort TEXT,
+   processtime INTEGER
    )");
    
 // Creating table for settings

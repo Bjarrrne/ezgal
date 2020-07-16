@@ -259,7 +259,7 @@ echo "</section>";
 		<table class="overlay-table">
 		<tr><td>Number of media</td><td><?php $generalinfocountentries = $db->query("SELECT count(1) FROM files")->fetch(); echo $generalinfocountentries[0]; ?></td></tr>
 		<tr><td>Size of media</td><td><?php $generalinfosize = $db->query("SELECT SUM(file_size) FROM files")->fetch(); echo formatBytes($generalinfosize[0]); ?></td></tr>
-		<tr><td>ezgal Version</td><td>0.2</td></tr>
+		<tr><td>ezgal Version</td><td>0.3</td></tr>
 		</table>
 	</div>
 </div>

@@ -10,11 +10,11 @@ The idea is to create a super simple web-frontend for your self-hosted images, t
 * Creates thumbnails automatically (may take a while on first startup)
 * No need for a specific way of adding files. Simply add them in any way you want. FTP, PhotoSync App, WebDav, etc.
 * Everything is stored locally! No need for an internet connection because this doesn't use CDNs for external assets. This might be stupid but at the same time I wanted to create something that can work even when your server isn't connected to the internet (except GMaps, which is only activated when adding an API-Key).
-* Compatible file formats: 
-  * Standard web-compliant image files (jpg, png, bmp have been tested)
-  * Raw files
-  * Standard HTML5 compatible videos
-  * Standard HTML5 compatible audio
+* Compatible file mimetypes (not all have been tested yet): 
+  * Standard image files: 'jpeg', 'tiff', 'png', 'bmp', 'x-bmp', 'x-ms-bmp', 'gif'
+  * Raw image files: 'x-canon-cr2'
+  * Video files: 'mpeg', 'mp4', 'ogg', 'quicktime', 'webm', 'x-msvideo', 'x-sgi-movie', '3gpp'
+  * (Standard HTML5 compatible audio)
   * The rest is trial and error I guess.
 
 ## What this doesn't do
@@ -56,7 +56,7 @@ Keep in mind that you will have to install the following tools/extensions for th
 * PHP on Apache
 * Image processing:
   * Imagemagick/Imagick for standard file formats
-  * ufraw/exiv2 for raw files
+  * exiv2 for raw files
   * ffmpeg for video files
 * Frontend
   * LazyLoad (v. 15.1.1, https://github.com/verlok/lazyload)
@@ -66,9 +66,10 @@ Keep in mind that you will have to install the following tools/extensions for th
 ## What I'd like to accomplish (kind of a Roadmap)
 
 - [x] Show Gifs/Videos (still having frontend problems)
-  - [ ] Thumbnails for videos? (ffmpeg etc.)
+  - [x] Thumbnails for videos? (ffmpeg etc.)
   - [ ] "Thumbnails" for audio
 - [x] Show Metadata/Exif data
+- [ ] Video/Audio Metadata
 - [x] Get Lazyload to work
 - [x] Fullscreen slideshow when image is opened (with preloader)
 - [ ] Filtering options according to metadata (date, file type, metadata, etc.)

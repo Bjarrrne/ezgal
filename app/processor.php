@@ -198,6 +198,9 @@ $exiv2query = "SELECT * FROM files WHERE mimetype IN ('x-canon-cr2') AND filetyp
 
 // Loop for standard image files. No videos, audio or gifs allowed.
 foreach ($db->query($imagickquery) as $imagedata) {
+	// Starting processtime measurement
+	$processstart = microtime(true);
+	
 	// Setting up data from DB needed
 	$origpath = $imagedata['relativepath'];
 	$dirname = $imagedata['dirname'];
@@ -248,14 +251,20 @@ foreach ($db->query($imagickquery) as $imagedata) {
 		$intermediate->writeImage($intermediatefile);
 		$intermediate->destroy();
 		
+	// Ending processtime measurement
+	$processend = microtime(true);
+	$processtime = $processend - $processstart;
 	// Write success into database
-	$db->exec("UPDATE files SET processed = 1 WHERE relativepath = '$origpath'");
+	$db->exec("UPDATE files SET processed = 1, processtime = '$processtime' WHERE relativepath = '$origpath'");
 	
 // End standard images processing loop
 }
 
 // Loop for videos
 foreach ($db->query($ffmpegquery) as $videodata) {
+	// Starting processtime measurement
+	$processstart = microtime(true);
+	
 	// Setting up data from DB needed
 	$origpath = $videodata['relativepath'];
 	$dirname = $videodata['dirname'];
@@ -272,14 +281,20 @@ foreach ($db->query($ffmpegquery) as $videodata) {
 	// This can be used to generate gifs from videos, but atm the gifs are way to big so its not used
 	// exec('ffmpeg -ss 0.1 -t 2.5 -i '.$origpath.' -filter_complex "[0:v] fps=12,scale='.$setting_thumbsize.':-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" '.$videothumbdir.'/'.$filename.'.gif');
 	
+	// Ending processtime measurement
+	$processend = microtime(true);
+	$processtime = $processend - $processstart;
 	// Write success into database
-	$db->exec("UPDATE files SET processed = 1 WHERE relativepath = '$origpath'");
+	$db->exec("UPDATE files SET processed = 1, processtime = '$processtime' WHERE relativepath = '$origpath'");
 	
 // End video processing loop
 }
 
 // Loop for gifs (have to be resized for frontend to work properly)
 foreach ($db->query($gifquery) as $gifdata) {
+	// Starting processtime measurement
+	$processstart = microtime(true);
+	
 	// Setting up data from DB needed
 	$origpath = $gifdata['relativepath'];
 	$dirname = $gifdata['dirname'];
@@ -293,14 +308,20 @@ foreach ($db->query($gifquery) as $gifdata) {
 	// Create thumbnail with ffmpeg (seems to be kind of complicated with imagemagick...)
 	exec('ffmpeg -hide_banner -v warning -i '.$origpath.' -filter_complex "[0:v] scale=-1:'.$setting_thumbsize.':flags=lanczos,split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse" '.$thumbfile.'');
 	
+	// Ending processtime measurement
+	$processend = microtime(true);
+	$processtime = $processend - $processstart;
 	// Write success into database
-	$db->exec("UPDATE files SET processed = 1 WHERE relativepath = '$origpath'");
+	$db->exec("UPDATE files SET processed = 1, processtime = '$processtime' WHERE relativepath = '$origpath'");
 	
 // End gifs processing loop
 }
 
 // Loop for raw image files
 foreach ($db->query($exiv2query) as $rawdata) {
+	// Starting processtime measurement
+	$processstart = microtime(true);
+	
 	// Setting up data from DB needed
 	$origpath = $rawdata['relativepath'];
 	$dirname = $rawdata['dirname'];
@@ -364,8 +385,11 @@ foreach ($db->query($exiv2query) as $rawdata) {
 	unlink($origpath);
 	$origpath = $rawdata['relativepath'];
 
+	// Ending processtime measurement
+	$processend = microtime(true);
+	$processtime = $processend - $processstart;
 	// Write success into database
-	$db->exec("UPDATE files SET processed = 1 WHERE relativepath = '$origpath'");
+	$db->exec("UPDATE files SET processed = 1, processtime = '$processtime' WHERE relativepath = '$origpath'");
 
 // End raw processing loop
 }
