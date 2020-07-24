@@ -35,8 +35,9 @@ foreach ($filescan as $foundfile) {
 		continue;
 	}
 	
-	// Analyse files, use imagick only when it's an image file
-	if(exif_imagetype($absolutepath)) {
+	// Analyse files
+	// Image files
+	if($filetype == 'image') {
 		$imagick = new Imagick($absolutepath);
 		$exif_data = $imagick->getImageProperties("exif:*");
 		//print_r ($exif_data); // Only for processor development
@@ -82,7 +83,18 @@ foreach ($filescan as $foundfile) {
 			$exif_longitude_dd	= $exif_longitude_deg + ($exif_longitude_min / 60) + ($exif_longitude_sec / 3600);
 			if ($exif_longituderef == 'W') { $exif_longitude_dd *= -1; }
 			$processed			= '0';
-	// Non-image files	 THIS SHOULD BE EXTENDED TO EXTRACT AUDIO/VIDEO METADATA ETC.	
+	// Video files	
+	} elseif ($filetype == 'video') {
+			$processed			= '0';
+			$exif_exists 		= 'NULL';
+			$exif_datetime		= 'NULL';
+			$dirname			= pathinfo($relativepath, PATHINFO_DIRNAME);
+			$basename			= pathinfo($relativepath, PATHINFO_BASENAME);
+			$filename			= pathinfo($relativepath, PATHINFO_FILENAME);
+			$extension			= pathinfo($relativepath, PATHINFO_EXTENSION);
+			$file_size			= filesize($relativepath);
+			$mod_date			= filemtime($relativepath);
+			$date_to_sort		= $mod_date;
 	} else {
 			$processed			= '0';
 			$exif_exists 		= 'NULL';
