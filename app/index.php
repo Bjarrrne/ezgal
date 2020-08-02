@@ -104,7 +104,7 @@ foreach($db->query($frontendquery) as $filedata) {
 		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"thumbs/".$filedata['dirname']."/".$filedata['basename'].".gif\" onclick=\"overlay('openoverlay', '".$mediacounter."', 'gif', '".$relativepath."', '".$filedata['basename']."')\">";
 	// Images (standard & raw)
 	} elseif ($filedata['filetype'] == 'image') {
-		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" data-src=\"thumbs/".$filedata['dirname']."/".$filedata['basename'].".jpg\" onclick=\"overlay(
+		echo "<img id=\"mediaid".$mediacounter."\" class=\"lazy\" src=\"lowquals/".$filedata['dirname']."/".$filedata['basename'].".jpg\" data-src=\"thumbs/".$filedata['dirname']."/".$filedata['basename'].".jpg\" onclick=\"overlay(
 			'openoverlay',
 			'".$mediacounter."',
 			'image',

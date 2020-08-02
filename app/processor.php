@@ -193,10 +193,12 @@ foreach ($filescan as $foundfile) {
 //
 
 // Create imagethumbs, videothumbs and intermediate folders
+if (!is_writable('lowquals')) { mkdir('lowquals', 0755, true); }
 if (!is_writable('thumbs')) { mkdir('thumbs', 0755, true); }
 if (!is_writable('intermediates')) { mkdir('intermediates', 0755, true); }
 if (!is_writable('videothumbs')) { mkdir('videothumbs', 0755, true); }
 if (!is_writable('tmp')) { mkdir('tmp', 0755, true); }
+$lowqualsdir = realpath("lowquals");
 $thumbsdir = realpath("thumbs");
 $intermediatesdir = realpath("intermediates");
 $videothumbsdir = realpath("videothumbs");
@@ -262,6 +264,27 @@ foreach ($db->query($imagickquery) as $imagedata) {
 		$intermediate->stripImage();
 		$intermediate->writeImage($intermediatefile);
 		$intermediate->destroy();
+		
+		// Create lowquals directories
+		$lowqualdir = $lowqualsdir . "/" . $dirname;
+		$lowqualfile = $lowqualdir . "/" . $filename . ".jpg";
+		if (!is_writable($lowqualdir)) { mkdir($lowqualdir, 0755, true); }
+		// Create lowquals
+		$lowqual = new Imagick($origpath);
+		// Rotate image if exif data says so, with transparent background just in case
+		if ($orientation == '3') { $lowqual->rotateImage(new ImagickPixel('#00000000'), 180); } elseif ($orientation == '6') { $lowqual->rotateImage(new ImagickPixel('#00000000'), 90); } elseif ($orientation == '6') { $lowqual->rotateImage(new ImagickPixel('#00000000'), 270); }
+		// Resize image using the lanczos resampling algorithm based on width
+		$lowqual->resizeImage(0,$setting_thumbsize,Imagick::FILTER_LANCZOS,1,FALSE);
+		// Sharpen lowqual
+		if ($setting_sharpening == 1) { $lowqual->sharpenImage(0, 0.7); }
+		// Set to use jpeg compression
+		$lowqual->setImageCompression(Imagick::COMPRESSION_JPEG);
+		// Set compression level (1 lowest quality, 100 highest quality)
+		$lowqual->setImageCompressionQuality(10);
+		// Strip out unneeded meta data
+		$lowqual->stripImage();
+		$lowqual->writeImage($lowqualfile);
+		$lowqual->destroy();
 		
 	// Ending processtime measurement
 	$processend = microtime(true);

@@ -3,10 +3,13 @@
 ## Database Management
 
 - [ ] Create mimetype specific DB inputs where needed (e.g. for videofiles/metadata)
+  - [ ] Add EXIF for video files. This could be done via exiftool.
 - [ ] Extract video/audio metadata (length etc.)
 
 ## File Processing
 
+- [ ] Add compatible RAW mimetypes to processor
+- [ ] Fix image removal process (important!)
 - [x] Deletion of deleted images from DB and thumbnails/intermediates
 - [x] Ensure that only compatible files are being used
 - [ ] Optimize large archive processing
@@ -16,6 +19,7 @@
 
 ## Frontend
 
-* Map
+- [ ] Starring/Tagging media
+- [ ] Map
   * [x] Finalize long/lat usage in file details (works, I think?)
   * [ ] Frontend GMaps API Key input formular
