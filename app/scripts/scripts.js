@@ -76,7 +76,7 @@ function overlay(querytype, media_id, filetype, mediapath, basename, date_to_sor
 	if (localStorage.getItem("querytype") == 'openoverlay') {	
 		if (localStorage.getItem("filetype") == 'image') {
 			document.getElementById("overlay_type_image").style.display = "block";
-			document.getElementById("overlay_mediapath_image").src = "intermediates/" + localStorage.getItem("mediapath");
+			document.getElementById("overlay_mediapath_image").src = "intermediates/" + localStorage.getItem("mediapath") + ".jpg";
 			// Setting up media download button
 			document.getElementById("overlaydownloadbutton-image").href = localStorage.getItem("mediapath");
 			document.getElementById("overlaydownloadbutton-image").download = localStorage.getItem("basename");
@@ -112,7 +112,7 @@ function overlay(querytype, media_id, filetype, mediapath, basename, date_to_sor
 			var unixdate = new Date(unixmillisec);
 			var realdate = unixdate.toLocaleString();
 			document.getElementById("overlay_info_date").innerHTML = realdate;
-			document.getElementById("overlay_info_directory").innerHTML = localStorage.getItem("mediapath");
+			document.getElementById("overlay_info_directory").innerHTML = localStorage.getItem("mediapath").substr(7);
 			var mpix = localStorage.getItem("width") * localStorage.getItem("height") / 1000000;
 			document.getElementById("overlay_info_fileinfo").innerHTML = parseFloat(mpix).toFixed(1) + " MP&nbsp;&nbsp;&nbsp;" + localStorage.getItem("width") + " x " + localStorage.getItem("height") + "&nbsp;&nbsp;&nbsp;" + bytestomb(localStorage.getItem("file_size"));
 			document.getElementById("overlay_info_imageinfo").innerHTML = localStorage.getItem("exif_make") + " " + localStorage.getItem("exif_model");
@@ -131,7 +131,7 @@ function overlay(querytype, media_id, filetype, mediapath, basename, date_to_sor
 		} else if (localStorage.getItem("filetype") == 'gif') {
 			document.getElementById("overlay_info_type_image").style.height = "100%";
 			document.getElementById("overlay_button_container_image").style.height = "51px";
-			document.getElementById("overlay_info_directory").innerHTML = localStorage.getItem("mediapath");
+			document.getElementById("overlay_info_directory").innerHTML = localStorage.getItem("mediapath").substr(7);
 			document.getElementById("overlay_info_fileinfo").innerHTML = localStorage.getItem("width") + " x " + localStorage.getItem("height");	
 		} else if (localStorage.getItem("filetype") == 'video') {
 			document.getElementById("overlay_info_type_video").style.height = "100%";

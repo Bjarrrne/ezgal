@@ -108,7 +108,7 @@ foreach($db->query($frontendquery) as $filedata) {
 			'openoverlay',
 			'".$mediacounter."',
 			'image',
-			'".$filedata['dirname']."/".$filedata['basename'].".jpg',
+			'".$filedata['relativepath']."',
 			'".$filedata['basename']."',
 			'".$filedata['date_to_sort']."',
 			'".$filedata['mimetype']."',
