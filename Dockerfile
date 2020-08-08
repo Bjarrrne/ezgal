@@ -8,7 +8,6 @@ COPY ./app/ .
 RUN apt-get update && apt-get install -y \
 	ghostscript \
 	ffmpeg \
-	ufraw \
 	exiv2 \
 	imagemagick \
 	libmagickwand-dev --no-install-recommends \
